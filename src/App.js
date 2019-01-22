@@ -19,9 +19,11 @@ class App extends Component {
   fetchGame = () => {
     fetch('/users')
     .then(res => res.json())
-    .then(users => this.setState({
+    .then(users => {
+      this.setState({
       users: users.users
-    }))
+    })
+  })
   }
 
   handleSubmit = async e => {
@@ -31,8 +33,10 @@ class App extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ users: this.state.notes }),
-    });
+      body: JSON.stringify({ users: this.state.noteText }),
+    }).then(() => this.setState({
+              noteText: '',
+        }));
   };
 
   updateNoteText(noteText) {
@@ -41,9 +45,10 @@ class App extends Component {
       })
     }
 
-    addNote() {
+    addNote = () => {
 
-      if (this.state.noteText === '') {return}
+      console.log(this.state.noteText)
+      if (this.state.noteText === '') {return null}
 
       let notesArr = this.state.notes
       notesArr.push(this.state.notes)
@@ -62,11 +67,12 @@ class App extends Component {
       const notesArr = [...this.state.notes, this.state.noteText]
 
       this.setState({
-        noteText: '',
         notes: notesArr
       })
   }
 }
+
+
 
 deleteNote(index) {
       let notesArr = this.state.notes
